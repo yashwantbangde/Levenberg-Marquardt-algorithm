@@ -1,37 +1,15 @@
 # Implementation of Levenberg-Marquardt algorithm from scratch
 
-1. The code begins by importing the required libraries - NumPy, Matplotlib, and Streamlit.
+1. Initialize the parameters of the linear regression model: This involves setting the initial values of the parameters of the linear regression model. These parameters are typically denoted by beta and are used to predict the response variable y as a linear combination of the predictor variables x.
 
-2. The quadratic_function function takes in x, a, b, and c as input parameters and returns the output of the quadratic function. This function simply computes the output of the quadratic function for the given input values of x, a, b, and c.
+2. Compute the Jacobian matrix of the model at the current parameter values: The Jacobian matrix is a matrix of partial derivatives that describes how each element of the model output (i.e., the predicted y values) changes with respect to each element of the model input (i.e., the beta parameters). The Jacobian matrix is used to estimate the Hessian matrix in the next step.
 
-3. The jacobian_quadratic function takes in x, a, b, and c as input parameters and returns the Jacobian matrix for the quadratic function. This function computes the Jacobian matrix for the given input values of x, a, b, and c by setting the first column of the Jacobian matrix as x**2, the second column as x, and the third column as 1.
+3. Compute the approximation to the Hessian matrix using the Jacobian matrix: The Hessian matrix is a matrix of second partial derivatives that describes the curvature of the error function (i.e., the sum of squared residuals) at the current parameter values. The LM algorithm approximates the Hessian matrix by using the Jacobian matrix and a damping factor, which is used to avoid singular or ill-conditioned matrices.
 
-4. The levenberg_marquardt_quadratic function takes in x, y, a_init, b_init, c_init, lmbda_init, tol, and max_iter as input parameters and implements the Levenberg-Marquardt algorithm to optimize the quadratic function. The function initializes the parameter values as a = a_init, b = b_init, c = c_init, and lambda = lambda_init.
+4. Solve the normal equations to obtain the parameter update: The normal equations are a system of linear equations that can be used to solve for the parameter update that minimizes the error function. The LM algorithm solves these equations by adding the damping factor to the diagonal of the approximation to the Hessian matrix.
 
-5. The for loop in levenberg_marquardt_quadratic iterates over max_iter iterations to optimize the quadratic function.
+5. Update the parameters of the linear regression model: The parameter update obtained in the previous step is added to the current parameter values to obtain new parameter values. These new parameter values are used to compute a new predicted y values in the next iteration of the algorithm.
 
-6. The first step in each iteration is to compute the residual, r, which is the difference between the actual output of the quadratic function and the observed output of the quadratic function for the given input values of x.
+6. Repeat steps 2-5 until convergence: The algorithm iterates through steps 2-5 until the parameter updates become sufficiently small or the maximum number of iterations is reached. At each iteration, the algorithm updates the parameters and computes a new predicted y values based on the new parameter values.
 
-7. The next step is to compute the Jacobian matrix for the current parameter values of a, b, and c using the jacobian_quadratic function.
-
-8. The Hessian matrix is computed by taking the dot product of the transpose of the Jacobian matrix and the Jacobian matrix itself.
-
-9. The damping parameter, lambda, is added to the diagonal elements of the Hessian matrix.
-
-10. The step size, step, is computed by solving the linear system Hessian * step = Jacobian^T * residual, where ^T denotes the transpose of a matrix.
-
-11. The parameter values a, b, and c are updated using the computed step size.
-
-12. The new residual, r_new, and the new objective function value, obj_new, are computed using the updated parameter values.
-
-13. The algorithm checks for convergence by computing the absolute difference between the new and old objective function values and comparing it to the user-defined tolerance, tol. If the difference is less than the tolerance, the algorithm has converged and the break statement is executed to exit the loop.
-
-14. If the new objective function value is less than the old objective function value, the damping parameter is decreased by a factor of 10. Otherwise, the damping parameter is increased by a factor of 10.
-
-15. Finally, the optimized parameter values a_opt, b_opt, and c_opt are returned by the function.
-
-16. The next few lines of code create sliders for the user to adjust the initial parameter values, damping parameter, tolerance, and maximum number of iterations.
-
-17. The x values for plotting are generated using np.linspace.
-
-18. The y values for the true function and the y_noise values for the noisy data are computed using the quadratic_function
+By iteratively updating the parameters of the linear regression model and minimizing the error function, the LM algorithm is able to estimate the best-fit parameters for the model. These parameters can be used to make predictions on new data or to gain insight into the relationship between the predictor variables and the response variable.
